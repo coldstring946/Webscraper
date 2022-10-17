@@ -1,0 +1,4 @@
+# I'm trying to create a script that opens a URL and downloads the PDFs in that location. 
+# Ideally the URLs are stored in a CSV file
+# Ideally the files will be stored on a local drive
+# Currently there are no username/password concerns
