@@ -1,0 +1,31 @@
+# So I tried to define URl and use a .csv file to provide the URL for the PDF downloading (lines 16-20), but this doesn't work....
+import os
+import requests
+from urllib.parse import urljoin
+from bs4 import BeautifulSoup
+
+##url = "https://ipo.lukasiewicz.gov.pl/wydawnictwa/cejem-woluminy/vol-19-no-3/?lang=en" #URL to scrape
+
+# If there is no such folder, the script will create one automatically
+
+folder_location = "D:\Final project\CEJEM\All PDFs"  # folder location
+    # create folder if it doesn't exist
+if not os.path.exists(folder_location): os.mkdir(folder_location)
+
+
+def url():
+  with open('D:\Final project\CEJEM.csv') as file:
+    csv_reader = csv.DictReader(file)
+  for csv_row in csv_reader:
+    scrape(csv_row['selection1_url'])
+
+
+def scrape(url):
+  response = requests.get(url)  # get the html
+  soup = BeautifulSoup(response.text, "html.parser")  # parse the html
+  for link in soup.select("a[href$='.pdf']"):  # select all the pdf links
+    # Name the pdf files using the last portion of each link which are unique in this case
+    filename = os.path.join(folder_location, link['href'].split('/')[-1])  # join the folder location and the filename
+    with open(filename, 'wb') as f:
+      # open the file and write the pdf
+      f.write(requests.get(urljoin(url, link['href'])).content)
