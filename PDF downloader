@@ -20,4 +20,3 @@ for link in url:
     with open(filename, 'wb') as f:
       # open the file and write the pdf
       f.write(requests.get(urljoin(url, link['href'])).content)
-url.seek(0)
